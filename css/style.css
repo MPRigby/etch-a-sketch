@@ -1,0 +1,61 @@
+body {
+    background-color: rgba(0, 0, 0, 1);
+}
+
+button {
+  font-size: 20;
+  width: 70%;
+  display: block;
+  margin: 15px auto;
+}
+
+.innerDiv {
+  display: inline-block;
+  margin: auto;
+  background-color: rgba(255, 255, 255, 1);
+  /*border: 1px solid black;*/
+  width: 35px;
+  height: 35px;
+}
+
+#outerContainer {
+  background-color: rgba(196, 0, 13, 1);
+  width: 900px;
+  height: 600px;
+  margin: 10px auto;
+  border-radius: 20px;
+}
+
+#leftButtonContainer {
+  position: relative;
+  bottom: 250px;
+  width: 165px;
+  margin: auto;
+  display: inline-block;
+}
+
+#rightButtonContainer {
+  position: relative;
+  top: 200px;
+  width: 150px;
+  margin: auto;
+  display: inline-block;
+  float: right;
+}
+
+#colorPickerP {
+  margin: 15px auto;
+}
+
+#sketchAreaContainer {
+  width: 560px;
+  height: 560px;
+  margin: 20px auto;
+  border: 1px solid black;
+  display: inline-block;
+  background-color: #FFFFFF;
+}
+
+p {
+  font-size: 20px;
+}
