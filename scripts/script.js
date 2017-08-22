@@ -54,19 +54,29 @@ $(document).ready(function() {
 });
 
 function createGrid (squareNum) {
-  $('.innerDiv').remove(); //clear existing grid boxes
-  $('br').remove(); //clear existing blank returns
-  //iterate through each box in the grid, adding a blank return after each row
+  $('.gridRow').remove(); //clear existing rows
+  //$('.innerDiv').remove(); //clear existing grid boxes
+  //add a <p> element gridRow for each row of the grid
   for (var i=0; i<squareNum; i++) {
-    for (var j=0; j<squareNum; j++){
-      $('#sketchAreaContainer').append('<div "+ squareNum +" class="innerDiv"></div>');
-    }
-    $('#sketchAreaContainer').append('<br>');
+    $('#sketchAreaContainer').append('<p class="gridRow"></p>');
+  }
+  //fill each <p> gridRow with the correct number of columns
+  for (var i=0; i<squareNum; i++) {
+    $('.gridRow').append('<div class="innerDiv"></div>');
   }
   //size each box so grid fits in sketchAreaContainer
-  var boxSize = (560/squareNum);
+  boxSize = Math.floor(560/squareNum); //floor will leave a large area of the grid unfilled, because the size of each grid square is rounded down
   $('.innerDiv').css('width', boxSize);
   $('.innerDiv').css('height', boxSize);
+
+  //add 1px to the width and height of each box until all remaining pizels in sketch area are filled
+  var remainder = 560%squareNum;
+  if (remainder != 0) {   //only make adjustments if neccesary
+    for (var i=1; i<=remainder; i++) {
+      $('.innerDiv:nth-child('+ i +')').css('width', boxSize+1); //in each gridRow, extend the with of the first n=remainder boxes by one pixel
+      $('.gridRow:nth-child('+ i +')').children('.innerDiv').css('height', boxSize+1);  //in the first n=remainder gridRows, extend the height of each box by one pixel
+    }
+  }
 }
 
 function newBoard() {
@@ -87,6 +97,7 @@ function promptHandler(input) {
     newBoard();
   } else { //if input is a valid number, set as grid size and create grid
     createGrid(input);
+    sketch();
   }
 }
 
@@ -98,6 +109,7 @@ function sketch () {
       if ($('#solid:checked').length>0) {
         //solid sketch
         var color = $('#colorPicker').val();
+        color = forceRGBaColor (color);
         $(this).css('background-color', color);
       } else if ($('#darken:checked').length>0) {
         //darken sketch
@@ -109,6 +121,7 @@ function sketch () {
       } else if ($('#random:checked').length>0) {
         //random sketch
         var color = randomRGBaColor();
+        color = forceRGBaColor (color);
         $(this).css('background-color', color);
       }
     } else { //do not change background if sketching is not enabled
@@ -136,7 +149,6 @@ function assembleRGBaColor (r, g, b, a) {
   }
 }
 
-/*
 function forceRGBaColor (color) {
   if (color[0]=='#') { //if color is a hex, convert to rgb
     color = hexToRgb(color);
@@ -157,7 +169,6 @@ function forceRGBaColor (color) {
   }
   return color;
 }
-*/
 
 function hexToRgb (hex) {
   if (hex.length == 7)  { //if full length hex
